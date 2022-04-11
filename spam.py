@@ -13,7 +13,10 @@ def spam_function(arr_str_json: str) -> str:
             if len(arr_json['arr'][1]) >= 3:
                 print('The array changed')
                 arr_json['arr'][1][2] = 9
-    return json.dumps(arr_json)
+    arr_json = json.dumps(arr_json)
+    with open("result.json", 'w') as fw:
+        fw.write(arr_json)
+    return arr_json
 
 
-# print(spam_function('{"arr": [[1,2,3],[2,4,5]]}'))
+print(spam_function('{"arr": [[1,2,3],[2,4,5]]}'))
