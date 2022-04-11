@@ -1,4 +1,5 @@
 import json
+import sys
 
 
 def spam_function(arr_str_json: str) -> str:
@@ -19,4 +20,6 @@ def spam_function(arr_str_json: str) -> str:
     return arr_json
 
 
-print(spam_function('{"arr": [[1,2,3],[2,4,5]]}'))
+if __name__ == "__main__":
+    spam_function(sys.argv[1])
+    # print(spam_function('{"arr": [[1,2,3],[2,4,5]]}'))
