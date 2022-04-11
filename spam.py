@@ -2,13 +2,17 @@ import json
 import sys
 
 
-def spam_function(arr_str_json: str) -> str:
+def spam_function(arr_str_json: str) -> None:
     if not isinstance(arr_str_json, str):
-        raise TypeError('Parameter of function must be string')
+        print("TypeError: Parameter of function must be string")
+        return
+        # raise TypeError('Parameter of function must be string')
     try:
         arr_json = json.loads(arr_str_json)
     except json.decoder.JSONDecodeError:
-        raise ValueError('Incorrect json format')
+        print("ValueError: Incorrect json format")
+        return
+        # raise ValueError('Incorrect json format')
     if 'arr' in arr_json:
         if len(arr_json['arr']) >= 2:
             if len(arr_json['arr'][1]) >= 3:
