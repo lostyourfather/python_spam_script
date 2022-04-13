@@ -25,4 +25,6 @@ def spam_function(arr_str_json: str) -> None:
 
 
 if __name__ == "__main__":
-    spam_function(sys.argv[1])
+    with open("data.txt", 'r', encoding='utf-8') as fr:
+        spam_function(fr.read())
+    #spam_function(sys.argv[1])
