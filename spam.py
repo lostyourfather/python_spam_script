@@ -1,5 +1,4 @@
 import json
-import sys
 
 
 def spam_function(arr_str_json: str) -> None:
@@ -13,18 +12,18 @@ def spam_function(arr_str_json: str) -> None:
         print("ValueError: Incorrect json format")
         return
         # raise ValueError('Incorrect json format')
-    if 'arr' in arr_json:
-        if len(arr_json['arr']) >= 2:
-            if len(arr_json['arr'][1]) >= 3:
-                arr_json['arr'][1][2] = 9
-    arr_json = json.dumps(arr_json)
+    '''print(f"{arr_json['learning']=}")
+    print(f"{arr_json['forecast']=}")
+    print(f"{arr_json['params']=}")'''
+    if len(arr_json['learning']) >= 2:
+        if len(arr_json['learning'][1]) >= 3:
+            arr_json['learning'][1][2] = 9.0
+    result = {"targetAgr": [1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 111.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0]}
     with open("result.json", 'w') as fw:
-        fw.write(arr_json)
-    print(arr_json)
+        json.dump(result, fw)
     return arr_json
 
 
 if __name__ == "__main__":
-    with open("data.txt", 'r', encoding='utf-8') as fr:
+    with open("data.json", 'r', encoding='utf-8') as fr:
         spam_function(fr.read())
-    #spam_function(sys.argv[1])
