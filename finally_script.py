@@ -4,7 +4,7 @@ import re
 from sklearn.cluster import KMeans
 
 
-def spam_function(arr_str_json: str) -> None:
+def finally_script(arr_str_json: str) -> None:
     if not isinstance(arr_str_json, str):
         print("TypeError: Parameter of function must be string")
         return
@@ -22,12 +22,12 @@ def spam_function(arr_str_json: str) -> None:
     answers = pd.DataFrame({'value': learning[0], 'clusters': kmeans.labels_})
     predict = pd.Series(kmeans.predict(forecast), name='predict')
     mean = answers.groupby('clusters').mean()
-    return mean.merge(predict, left_index=True, right_on='predict', how='right')['value'].values
+    result = list(mean.merge(predict, left_index=True, right_on='predict', how='right')['value'].values)
     with open("result.json", 'w') as fw:
         json.dump(result, fw)
-    return arr_json
+    return
 
 
 if __name__ == "__main__":
     with open("data.json", 'r', encoding='utf-8') as fr:
-        spam_function(fr.read())
+        print(finally_script(fr.read()))
