@@ -1,4 +1,7 @@
 import json
+import pandas as pd
+import re
+from sklearn.cluster import KMeans
 
 
 def spam_function(arr_str_json: str) -> None:
@@ -11,14 +14,15 @@ def spam_function(arr_str_json: str) -> None:
     except json.decoder.JSONDecodeError:
         print("ValueError: Incorrect json format")
         return
-        # raise ValueError('Incorrect json format')
-    '''print(f"{arr_json['learning']=}")
-    print(f"{arr_json['forecast']=}")
-    print(f"{arr_json['params']=}")'''
-    if len(arr_json['learning']) >= 2:
-        if len(arr_json['learning'][1]) >= 3:
-            arr_json['learning'][1][2] = 9.0
-    result = {"targetAgr": [1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 111.0, 2.0, 3.0, 11.0, 1.0, 2.0, 3.0, 11.0]}
+    learning = pd.DataFrame(arr_json['learning']).T
+    forecast = pd.DataFrame(arr_json['forecast']).T
+    kmeans = KMeans(n_clusters=arr_json['params']['n_clusters'], n_init=arr_json['params']['n_init'],
+                    max_iter=arr_json['params']['max_iter'],
+                    tol=arr_json['params']['tol']).fit(learning.drop(columns=0))
+    answers = pd.DataFrame({'value': learning[0], 'clusters': kmeans.labels_})
+    predict = pd.Series(kmeans.predict(forecast), name='predict')
+    mean = answers.groupby('clusters').mean()
+    return mean.merge(predict, left_index=True, right_on='predict', how='right')['value'].values
     with open("result.json", 'w') as fw:
         json.dump(result, fw)
     return arr_json
