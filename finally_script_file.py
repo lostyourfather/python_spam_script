@@ -1,7 +1,15 @@
 import json
 import pandas as pd
-import re
+import sys
 from sklearn.cluster import KMeans
+import warnings
+
+
+def warn(*args, **kwargs):
+    pass
+
+
+warnings.warn = warn
 
 
 def finally_script(arr_str_json: str) -> None:
@@ -23,11 +31,11 @@ def finally_script(arr_str_json: str) -> None:
     predict = pd.Series(kmeans.predict(forecast), name='predict')
     mean = answers.groupby('clusters').mean()
     result = list(mean.merge(predict, left_index=True, right_on='predict', how='right')['value'].values)
-    with open("result.json", 'w') as fw:
+    with open('result.json', 'w') as fw:
         json.dump(result, fw)
     return
 
 
 if __name__ == "__main__":
     with open("data.json", 'r', encoding='utf-8') as fr:
-        print(finally_script(fr.read()))
+        finally_script(fr.read())
