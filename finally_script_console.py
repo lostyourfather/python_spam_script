@@ -24,9 +24,8 @@ def finally_script(arr_str_json: str) -> list:
         return []
     learning = pd.DataFrame(arr_json['learning']).T
     forecast = pd.DataFrame(arr_json['forecast']).T
-    kmeans = KMeans(n_clusters=int(arr_json['params']['n_clusters']), n_init=int(arr_json['params']['n_init']),
-                    max_iter=int(arr_json['params']['max_iter']),
-                    tol=float(arr_json['params']['tol'])).fit(learning.drop(columns=0))
+    kmeans = KMeans(n_clusters=int(arr_json['params']['N_CLUSTERS']), n_init=int(arr_json['params']['N_INIT']),
+                    max_iter=int(arr_json['params']['MAX_ITER'])).fit(learning.drop(columns=0))
     answers = pd.DataFrame({'value': learning[0], 'clusters': kmeans.labels_})
     predict = pd.Series(kmeans.predict(forecast), name='predict')
     mean = answers.groupby('clusters').mean()

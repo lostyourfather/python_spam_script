@@ -3,6 +3,7 @@ import pandas as pd
 import sys
 from sklearn.cluster import KMeans
 import warnings
+import uuid
 
 
 def warn(*args, **kwargs):
@@ -24,18 +25,18 @@ def finally_script(arr_str_json: str) -> None:
         return
     learning = pd.DataFrame(arr_json['learning']).T
     forecast = pd.DataFrame(arr_json['forecast']).T
-    kmeans = KMeans(n_clusters=int(arr_json['params']['n_clusters']), n_init=int(arr_json['params']['n_init']),
-                    max_iter=int(arr_json['params']['max_iter']),
-                    tol=float(arr_json['params']['tol'])).fit(learning.drop(columns=0))
+    kmeans = KMeans(n_clusters=int(arr_json['params']['N_CLUSTERS']), n_init=int(arr_json['params']['N_INIT']),
+                    max_iter=int(arr_json['params']['MAX_ITER'])).fit(learning.drop(columns=0))
     answers = pd.DataFrame({'value': learning[0], 'clusters': kmeans.labels_})
     predict = pd.Series(kmeans.predict(forecast), name='predict')
     mean = answers.groupby('clusters').mean()
     result = list(mean.merge(predict, left_index=True, right_on='predict', how='right')['value'].values)
-    with open('result.json', 'w') as fw:
+    my_uuid = uuid.uuid1()
+    with open(f'{my_uuid.__str__()}.json', 'w') as fw:
         json.dump(result, fw)
     return
 
 
 if __name__ == "__main__":
-    with open("data.json", 'r', encoding='utf-8') as fr:
+    with open(sys.argv[1], 'r', encoding='utf-8') as fr:
         finally_script(fr.read())
